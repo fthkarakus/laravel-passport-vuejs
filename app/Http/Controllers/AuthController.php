@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\SendMail;
 use App\Models\User;
 use App\Repositories\Repository;
 use Carbon\Carbon;
@@ -10,7 +9,6 @@ use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -44,14 +42,6 @@ class AuthController extends Controller
             $response = $this->model->create($request->all());
 
             if($response){
-                $details = [
-                    'title' => 'Turk Ai - Öğrenci Bilgi Sistemi',
-                    'link'  => 'http://127.0.0.1/login',
-                    'body' => '<p>Sayın '. $request->name.',<br> Turk Ai - Öğrenci Bilgi Sistemine Hoşgeldiniz.</p><p>Kayıt esnasında belirlemiş olduğunuz kullanıcı bilgileri ile aşağıdaki linke tıklayarak giriş yapabilirsiniz.</p>'
-                ];
-
-                Mail::to($request->email)->send(new SendMail($details));
-
                 return response()->json([
                     'message' => 'Kullanıcınız oluşturulmuştur',
                     'status_code' => 201
